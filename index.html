@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para a minha Finalista Favorita 🎓</title>
+    <style>
+        :root {
+            --cor-psicologia: #FFA500; /* Laranja da Psicologia */
+            --cor-fundo: #fff5e6;
+            --cor-carta: #ffffff;
+            --cor-detalhes: #d48000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--cor-fundo);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------------------------
+           CAIXAS DE PERGUNTAS (DESVIO CONTROLADO)
+        ------------------------------------------- */
+        .quiz-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            z-index: 2000;
+            transition: opacity 0.5s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .quiz-container h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 50px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-sim {
+            background-color: var(--cor-psicologia);
+            color: white;
+            transition: background-color 0.2s;
+        }
+
+        .btn-sim:hover {
+            background-color: #e69500;
+        }
+
+        .btn-nao {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .oculto {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -60%) scale(0.9) !important;
+        }
+
+        /* -------------------------------------------
+           CENÁRIO PRINCIPAL 
+        ------------------------------------------- */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            padding: 40px 20px;
+            opacity: 0;
+            transition: opacity 1s ease;
+            pointer-events: none;
+        }
+
+        .main-content.ativo {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .coracao {
+            position: fixed;
+            color: rgba(255, 165, 0, 0.6);
+            font-size: 20px;
+            animation: queda linear forwards;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        @keyframes queda {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ENVELOPE DESIGN */
+        .envelope-wrapper {
+            position: relative;
+            width: 350px;
+            height: 250px;
+            background-color: #e69500;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            margin-top: 15vh;
+            display: block;
+        }
+
+        .envelope-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 175px solid transparent;
+            border-right: 175px solid transparent;
+            border-top: 130px solid var(--cor-psicologia);
+            transform-origin: top;
+            transition: transform 0.4s ease 0.2s;
+            z-index: 3;
+        }
+
+        .envelope-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 175px solid #ffa600d2;
+            border-right: 175px solid #ffa600d2;
+            border-bottom: 125px solid #ffa600;
+            z-index: 2;
+        }
+
+        /* A CARTA (CONTEÚDO DO TEXTO) */
+        .carta {
+            position: absolute;
+            bottom: 10px;
+            left: 25px;
+            width: 300px;
+            height: 200px;
+            background-color: var(--cor-carta);
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: all 0.6s ease-in-out;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .click-me {
+            position: absolute;
+            bottom: -40px;
+            width: 100%;
+            text-align: center;
+            color: #b37400;
+            font-weight: bold;
+            animation: piscar 1.5s infinite;
+        }
+
+        @keyframes piscar {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .main-content.carta-aberta {
+            justify-content: flex-start;
+        }
+
+        .envelope-wrapper.aberto {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            background-color: transparent;
+            box-shadow: none;
+            cursor: default;
+            margin-top: 20px;
+        }
+
+        .envelope-wrapper.aberto::before, .envelope-wrapper.aberto::after {
+            display: none;
+        }
+
+        .envelope-wrapper.aberto .carta {
+            position: relative;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: auto;
+            min-height: 300px;
+            z-index: 4;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 35px 25px;
+            overflow: visible;
+        }
+
+        .fita-digital {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .fita-digital h1 {
+            color: var(--cor-psicologia);
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .fita-digital h3 {
+            font-size: 13px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .texto-fita {
+            text-align: justify;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.7;
+            width: 100%;
+        }
+
+        .texto-fita p {
+            text-indent: 20px;
+            margin-bottom: 20px;
+        }
+
+        .texto-fita .assinatura {
+            text-indent: 0;
+            text-align: right;
+            margin-top: 30px;
+            margin-bottom: 0;
+            font-weight: bold;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        /* BOTÃO INTERATIVO NO FIM DA CARTA */
+        .btn-fotos {
+            margin-top: 25px;
+            background-color: var(--cor-psicologia);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.2);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-fotos:hover {
+            background-color: #e69500;
+            transform: scale(1.05);
+        }
+
+        /* -------------------------------------------
+           SEÇÃO DA LINHA CRONOLÓGICA (TIMELINE)
+        ------------------------------------------- */
+        .timeline-section {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            display: none;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .timeline-title {
+            color: var(--cor-detalhes);
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--cor-psicologia), var(--cor-detalhes));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 35px;
+        }
+
+        .timeline-item::before {
+            content: '🧡';
+            position: absolute;
+            left: -29px;
+            top: -2px;
+            font-size: 14px;
+            background: var(--cor-fundo);
+            padding: 2px;
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--cor-detalhes);
+            margin-bottom: 8px;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--cor-psicologia);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .timeline-content p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        .photo-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        /* CORREÇÃO DAS FOTOS: 100% NÍTIDAS E COMPLETAS */
+        .timeline-photo {
+            width: 100%;
+            height: 450px; /* Aumentamos um pouco para fotos muito verticais respirarem */
+            background-size: contain; /* Garante que a foto aparece 100% inteira da cabeça aos pés */
+            background-position: center top; /* Foca no topo/centro para nunca cortar rostos ou o topo de monumentos */
+            background-repeat: no-repeat;
+            background-color: #fffbfe; /* Um fundo suave que combina com o teu site nas laterais vazias */
+            border-radius: 8px;
+            border: 1px solid #ffe6cc;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .timeline-item.para-sempre::before {
+            content: '⬇️';
+            font-size: 14px;
+            left: -28px;
+            animation: balanco 1s infinite alternate;
+        }
+
+        .para-sempre-box {
+            background: linear-gradient(135deg, var(--cor-psicologia), #ff7b00);
+            color: white !important;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px !important;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.25);
+            padding: 15px !important;
+        }
+
+        @keyframes balanco {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PERGUNTA 1 -->
+    <div class="quiz-container" id="quiz1">
+        <h2>És a Adriana Araújo Ribeiro? 🎓</h2>
+        <div class="btn-wrapper">
+            <button class="btn btn-sim" onclick="avancarParaQuiz2()">Sim, sou!</button>
+            <button class="btn btn-nao" onmouseover="desviarCaixa('quiz1')" onclick="desviarCaixa('quiz1')">Não</button>
+        </div>
+    </div>
+
+    <!-- PERGUNTA 2 -->
+    <div class="quiz-container oculto" id="quiz2">
+        <h2>Amas o Miguel Soares Francisco? 🧡</h2>
+        <div class="btn-wrapper">
+            <button class="btn btn-sim" onclick="libertarSitePrincipal()">Sim, amo!</button>
+            <button class="btn btn-nao" onmouseover="desviarCaixa('quiz2')" onclick="desviarCaixa('quiz2')">Não</button>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-content" id="conteudoPrincipal">
+        
+        <div class="envelope-wrapper" id="envelope" onclick="abrirCarta()">
+            <div class="carta">
+                <div class="fita-digital">
+                    <h3>ISMT - Coimbra</h3>
+                    <h1>Parabéns, Psicóloga! 🎓🧡</h1>
+                    
+                    <div class="texto-fita">
+                        <p>Olá, minha querida.</p>
+                        
+                        <p>Vai ser difícil começar este texto, porque quero que saia tão perfeito como tu és, mas vamos a isso… Amor, em primeiro lugar, quero felicitar-te por acabares a tua licenciatura e por esta caminhada que passaste inesquecível em Coimbra. Sei que não estive sempre presente, mas apareci na altura certa para tornar Coimbra mesmo inesquecível para ti.</p>
+                        
+                        <p>Olhando para o início de tudo, temos de falar de um dos teus lugares mais frequentados na cidade: o NB, o sítio onde nos conhecemos. Passaste lá muito tempo (o que eu não gostei nada, ahahah!), mas, no fim, acabou por compensar. Encontraste o homem da tua vida e o futuro pai da tua Teresinha! Já eu, encontrei a minha menina, a mulher da minha vida. Desde o primeiro dia, parecia que já nos conhecíamos de algum lado há muito tempo…</p>
+                        
+                        <p>Depois disso, veio a fase de nos conhecermos realmente melhor. Foi aí que percebi quem era esta menina tão querida e com um coração tão bom. Começaste a ser um vício, pois cada vez que passava tempo contigo, apetecia-me repetir outra, e outra, e outra vez. Sempre que estávamos juntos, a maior parte das vezes era no teu quarto (que ambos sabemos que também já é meu!). Era lá que nos ríamos, que fazíamos perguntas um ao outro e onde começámos a gozar um com o outro. Do nada, as coisas na minha vida começaram a fazer sentido; parecia que finalmente compreendia o real motivo de o Destino não me ter deixado ficar em Aveiro e me ter mandado para Coimbra.</p>
+                        
+                        <p>Com o passar do tempo, chegou um dia muito importante e, ao mesmo tempo, complicado na nossa vida: o Dia dos Namorados. Foi importante porque eu já sentia um grande carinho por ti, mas complicado porque nós ainda não namorávamos, ahahah! Mas pronto, senti que devia falar contigo para ver como íamos resolver isto. Essa foi uma das nossas primeiras conversas mais importantes, um dos momentos que me fez ter a certeza de que tu serias a minha primeira namorada. Foi aí que, finalmente, disse aos meus pais que existia uma menina chamada Adriana de quem eu gostava muito. Desculpa ter-te feito chorar com esse tema, amor, não era a minha intenção, ahahah!</p>
+                        
+                        <p>E assim, do nada, passaram três meses (desde que te conheci, acho que o tempo passa a correr, principalmente quando estamos juntos!). Como o teu quarto foi o sítio onde começámos a construir algo os dois, achei que seria o local ideal para te pedir em namoro. Para isso, tive de fazer um plano muito elaborado para te preparar a surpresa que realmente merecias. Tive a ajuda da Cátia, mas principalmente da Sarita. No fim, tudo correu como eu queria e finalmente podia dizer ao mundo que a Adriana Araújo Ribeiro era a minha namorada. Iuuupiiii!</p>
+                        
+                        <p>A partir desse dia, fui percebendo que essa escolha tinha sido a melhor da minha vida, pois nunca fui tão feliz com alguém como sou contigo. Temos as nossas chatices, como qualquer casal, mas ao final do dia acabamos sempre por estar os dois juntos, sem espaço para estarmos chateados.</p>
+                        
+                        <p>Um momento que também gostei muito foi da tua gala, onde, sinceramente, éramos os mais giros da festa, ahahah!</p>
+                        
+                        <p>E assim chegou a Semana Académica, onde finalmente trajei graças a ti. Quando me traçaste a capa, vivemos um dos momentos mais bonitos que já tive com alguém. Adorei, até porque esse momento só fazia sentido exatamente contigo. Depois, chegou o dia do cortejo, o momento em que conheci os teus familiares — que, como é óbvio, já me adoram, mesmo eu sendo um cachaceiro, ahahah! Fui muito bem tratado por todos e imagina lá que até já me arranjaram trabalho, ahahah!</p>
+                        
+                        <p>Podia estar aqui a contar muitas mais histórias nossas, mas pronto, amor, esta é a parte linda que fica gravada na nossa história. Obrigado, Coimbra!</p>
+                        
+                        <p>Amo-te, princesa.</p>
+                        
+                        <p class="assinatura">Beijão do teu maior fã,<br><br>Miguel Soares Francisco</p>
+                    </div>
+
+                    <button class="btn-fotos" id="btnRevelar" onclick="revelarFotos()">Ver Fotos e Linha do Tempo 📸</button>
+                </div>
+            </div>
+            <div class="click-me" id="aviso">Clica no envelope para abrir ✉️</div>
+        </div>
+
+        <!-- SEÇÃO DA TIMELINE CRONOLÓGICA DAS 21 FOTOS -->
+        <div class="timeline-section" id="secaoTimeline">
+            <div class="timeline-title">✨ A Nossa Linha do Tempo ✨</div>
+            <div class="timeline">
+                
+                <!-- 19-12-2025 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">19 de Dezembro de 2025 📅</div>
+                    <div class="timeline-content">
+                        <p><strong>O Dia do NB Coimbra!</strong> Não tirámos nenhuma fotografia nesta noite infelizmente, mas foi aqui que a nossa história começou.</p>
+                    </div>
+                </div>
+
+                <!-- 14-02-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">14 de Fevereiro de 2026 🧡</div>
+                    <div class="timeline-content">
+                        <p>O nosso Dia dos Namorados! Mesmo antes de sermos namorados.</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/14-02-2026.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/14-02-2026-f2.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 17-02-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">17 de Fevereiro de 2026 ✨</div>
+                    <div class="timeline-content">
+                        <p>Carnaval de Ovar.</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/17-02-2026.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 19-03-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">19 de Março de 2026 🌹</div>
+                    <div class="timeline-content">
+                        <p>Três meses depois, o plano elaborado com a ajuda da Sarita e da Cátia correu na perfeição no teu quarto. Passaste a ser oficialmente a minha namorada!
+                            Mais momentos guardados no nosso cantinho e os sorrisos que viraram o meu vício diário.</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/19-03-2026-f1.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/19-03-2026-f2.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 25-03-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">25 de Março de 2026 🔐</div>
+                    <div class="timeline-content">
+                        <p><strong>Mais momentos juntos!</strong> </p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/25-03-2026.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 23-04-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">23 de Abril de 2026 🥂</div>
+                    <div class="timeline-content">
+                        <p>Habibi???????</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/23-04-2026.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 01-05-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">01 de Maio de 2026 💃🕺</div>
+                    <div class="timeline-content">
+                        <p><strong>A Tua Gala!</strong> O momento em que brilhámos juntos e éramos, sem qualquer dúvida, os mais giros de toda a festa.</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/01-05-2026-f1.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/01-05-2026-f2.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/01-05-2026-f3.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 22-05-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">22 de Maio de 2026 🎓📜</div>
+                    <div class="timeline-content">
+                        <p><strong>A nossa Serenata!</strong> O orgulho gigante de trajar contigo e de te ver viver as tradições de Coimbra tão de perto.</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/22-05-2026-f1.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/22-05-2026-f2.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/22-05-2026-f3.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 24-05-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">24 de Maio de 2026 🧥✨</div>
+                    <div class="timeline-content">
+                        <p><strong>O Cortejo!</strong> Um dos momentos mais bonitos e marcantes que já vivi. Só fazia sentido ser feito por ti.</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/24-05-2026-f1.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/24-05-2026-f2.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/24-05-2026-f3.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/24-05-2026-f4.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 26-05-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">26 de Maio de 2026 🚜🎉</div>
+                    <div class="timeline-content">
+                        <p><strong>Foto no pré ahahah</strong> </p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/26-05-2026.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 29-05-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">29 de Maio de 2026 🧡</div>
+                    <div class="timeline-content">
+                        <p>A fechar a grande etapa académica com a cumplicidade que nos define.</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/29-05-2026-f1.jpeg');"></div>
+                            <div class="timeline-photo" style="background-image: url('imagens/29-05-2026-f2.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 13-06-2026 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">13 de Junho de 2026 🎓👑</div>
+                    <div class="timeline-content">
+                        <p><strong>Oficialmente Licenciada!</strong> O culminar de todo o teu esforço. Que orgulho em ti, minha psicóloga!</p>
+                        <div class="photo-grid">
+                            <div class="timeline-photo" style="background-image: url('imagens/fin.jpeg');"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FIM DA LINHA: PARA SEMPRE -->
+                <div class="timeline-item para-sempre">
+                    <div class="timeline-date">O Nosso Futuro... 🚀</div>
+                    <div class="timeline-content para-sempre-box">
+                        ❤️ PARA SEMPRE ❤️
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function desviarCaixa(idDoQuiz) {
+            const caixa = document.getElementById(idDoQuiz);
+            const desvioX = (Math.random() * 160) - 80;
+            const desvioY = (Math.random() * 100) - 50;
+            caixa.style.transform = `translate(calc(-50% + ${desvioX}px), calc(-50% + ${desvioY}px))`;
+        }
+
+        function avancarParaQuiz2() {
+            document.getElementById('quiz1').classList.add('oculto');
+            setTimeout(() => {
+                document.getElementById('quiz2').classList.remove('oculto');
+            }, 400);
+        }
+
+        function libertarSitePrincipal() {
+            document.getElementById('quiz2').classList.add('oculto');
+            setTimeout(() => {
+                document.getElementById('conteudoPrincipal').classList.add('ativo');
+            }, 500);
+        }
+
+        function abrirCarta() {
+            const envelope = document.getElementById('envelope');
+            const aviso = document.getElementById('aviso');
+            
+            if(!envelope.classList.contains('aberto')) {
+                envelope.classList.add('aberto');
+                aviso.style.display = 'none';
+                document.getElementById('conteudoPrincipal').classList.add('carta-aberta');
+                document.body.style.overflowY = 'auto';
+                setInterval(criarCoracao, 250);
+            }
+        }
+
+        function revelarFotos() {
+            const timeline = document.getElementById('secaoTimeline');
+            const botao = document.getElementById('btnRevelar');
+            
+            timeline.style.display = 'block';
+            
+            setTimeout(() => {
+                timeline.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                botao.style.display = 'none';
+            }, 100);
+        }
+
+        function criarCoracao() {
+            const coracao = document.createElement('div');
+            coracao.classList.add('coracao');
+            const simbolos = ['🧡', '❤️', 'ψ', '🎓', '✨'];
+            coracao.innerText = simbolos[Math.floor(Math.random() * simbolos.length)];
+            
+            coracao.style.left = Math.random() * 100 + 'vw';
+            coracao.style.animationDuration = Math.random() * 2 + 3 + 's';
+            coracao.style.fontSize = Math.random() * 15 + 15 + 'px';
+            
+            document.body.appendChild(coracao);
+            
+            setTimeout(() => {
+                coracao.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
