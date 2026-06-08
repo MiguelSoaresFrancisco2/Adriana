@@ -369,27 +369,35 @@
             font-size: 14px;
             color: #555;
             line-height: 1.5;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .photo-grid {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: 12px;
+            margin-top: 5px;
         }
 
-        /* CORREÇÃO DAS FOTOS: 100% NÍTIDAS E COMPLETAS */
-        .timeline-photo {
+        /* NOVO DESIGN ADAPTÁVEL PARA AS IMAGENS NATIVAS */
+        .timeline-photo-container {
             width: 100%;
-            height: 450px; /* Aumentamos um pouco para fotos muito verticais respirarem */
-            background-size: contain; /* Garante que a foto aparece 100% inteira da cabeça aos pés */
-            background-position: center top; /* Foca no topo/centro para nunca cortar rostos ou o topo de monumentos */
-            background-repeat: no-repeat;
-            background-color: #fffbfe; /* Um fundo suave que combina com o teu site nas laterais vazias */
+            background-color: #fffbfe;
             border-radius: 8px;
             border: 1px solid #ffe6cc;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .timeline-photo-container img {
+            width: 100%;
+            height: auto;
+            max-height: 500px; /* Impede que fotos verticais fiquem gigantescas no ecrã */
+            display: block;
+            object-fit: contain;
         }
 
         .timeline-item.para-sempre::before {
@@ -418,7 +426,6 @@
 </head>
 <body>
 
-    <!-- PERGUNTA 1 -->
     <div class="quiz-container" id="quiz1">
         <h2>És a Adriana Araújo Ribeiro? 🎓</h2>
         <div class="btn-wrapper">
@@ -427,7 +434,6 @@
         </div>
     </div>
 
-    <!-- PERGUNTA 2 -->
     <div class="quiz-container oculto" id="quiz2">
         <h2>Amas o Miguel Soares Francisco? 🧡</h2>
         <div class="btn-wrapper">
@@ -436,7 +442,6 @@
         </div>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <div class="main-content" id="conteudoPrincipal">
         
         <div class="envelope-wrapper" id="envelope" onclick="abrirCarta()">
@@ -477,12 +482,10 @@
             <div class="click-me" id="aviso">Clica no envelope para abrir ✉️</div>
         </div>
 
-        <!-- SEÇÃO DA TIMELINE CRONOLÓGICA DAS 21 FOTOS -->
         <div class="timeline-section" id="secaoTimeline">
             <div class="timeline-title">✨ A Nossa Linha do Tempo ✨</div>
             <div class="timeline">
                 
-                <!-- 19-12-2025 -->
                 <div class="timeline-item">
                     <div class="timeline-date">19 de Dezembro de 2025 📅</div>
                     <div class="timeline-content">
@@ -490,139 +493,127 @@
                     </div>
                 </div>
 
-                <!-- 14-02-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">14 de Fevereiro de 2026 🧡</div>
                     <div class="timeline-content">
                         <p>O nosso Dia dos Namorados! Mesmo antes de sermos namorados.</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/14-02-2026.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/14-02-2026-f2.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/14-02-2026.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/14-02-2026-f2.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 17-02-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">17 de Fevereiro de 2026 ✨</div>
                     <div class="timeline-content">
                         <p>Carnaval de Ovar.</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/17-02-2026.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/17-02-2026.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 19-03-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">19 de Março de 2026 🌹</div>
                     <div class="timeline-content">
                         <p>Três meses depois, o plano elaborado com a ajuda da Sarita e da Cátia correu na perfeição no teu quarto. Passaste a ser oficialmente a minha namorada!
                             Mais momentos guardados no nosso cantinho e os sorrisos que viraram o meu vício diário.</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/19-03-2026-f1.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/19-03-2026-f2.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/19-03-2026-f1.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/19-03-2026-f2.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 25-03-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">25 de Março de 2026 🔐</div>
                     <div class="timeline-content">
                         <p><strong>Mais momentos juntos!</strong> </p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/25-03-2026.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/25-03-2026.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 23-04-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">23 de Abril de 2026 🥂</div>
                     <div class="timeline-content">
                         <p>Habibi???????</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/23-04-2026.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/23-04-2026.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 01-05-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">01 de Maio de 2026 💃🕺</div>
                     <div class="timeline-content">
                         <p><strong>A Tua Gala!</strong> O momento em que brilhámos juntos e éramos, sem qualquer dúvida, os mais giros de toda a festa.</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/01-05-2026-f1.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/01-05-2026-f2.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/01-05-2026-f3.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/01-05-2026-f1.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/01-05-2026-f2.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/01-05-2026-f3.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 22-05-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">22 de Maio de 2026 🎓📜</div>
                     <div class="timeline-content">
                         <p><strong>A nossa Serenata!</strong> O orgulho gigante de trajar contigo e de te ver viver as tradições de Coimbra tão de perto.</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/22-05-2026-f1.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/22-05-2026-f2.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/22-05-2026-f3.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/22-05-2026-f1.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/22-05-2026-f2.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/22-05-2026-f3.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 24-05-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">24 de Maio de 2026 🧥✨</div>
                     <div class="timeline-content">
                         <p><strong>O Cortejo!</strong> Um dos momentos mais bonitos e marcantes que já vivi. Só fazia sentido ser feito por ti.</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/24-05-2026-f1.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/24-05-2026-f2.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/24-05-2026-f3.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/24-05-2026-f4.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/24-05-2026-f1.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/24-05-2026-f2.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/24-05-2026-f3.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/24-05-2026-f4.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 26-05-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">26 de Maio de 2026 🚜🎉</div>
                     <div class="timeline-content">
                         <p><strong>Foto no pré ahahah</strong> </p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/26-05-2026.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/26-05-2026.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 29-05-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">29 de Maio de 2026 🧡</div>
                     <div class="timeline-content">
                         <p>A fechar a grande etapa académica com a cumplicidade que nos define.</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/29-05-2026-f1.jpeg');"></div>
-                            <div class="timeline-photo" style="background-image: url('imagens/29-05-2026-f2.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/29-05-2026-f1.jpeg" alt="Foto"></div>
+                            <div class="timeline-photo-container"><img src="imagens/29-05-2026-f2.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 13-06-2026 -->
                 <div class="timeline-item">
                     <div class="timeline-date">13 de Junho de 2026 🎓👑</div>
                     <div class="timeline-content">
                         <p><strong>Oficialmente Licenciada!</strong> O culminar de todo o teu esforço. Que orgulho em ti, minha psicóloga!</p>
                         <div class="photo-grid">
-                            <div class="timeline-photo" style="background-image: url('imagens/fin.jpeg');"></div>
+                            <div class="timeline-photo-container"><img src="imagens/fin.jpeg" alt="Foto"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- FIM DA LINHA: PARA SEMPRE -->
                 <div class="timeline-item para-sempre">
                     <div class="timeline-date">O Nosso Futuro... 🚀</div>
                     <div class="timeline-content para-sempre-box">
